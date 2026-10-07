@@ -1,0 +1,180 @@
+----------------------------------- Roles -----------------------------------
+    * Admin
+    * customer
+
+----------------------------------- Pages -----------------------------------
+    * Home
+    * Login
+    * Register
+    * Profile
+
+----------------------------------- DataBase -----------------------------------
+
+@Users
+    => id               [bigint, auto_increment, PK]
+    => name             [string]
+    => email            [string, min: 8, max: 255]
+    => password         [string]                                                   Note : Hashed
+    => phone            [string, unique]                                           Note : EX -> (+20|0)(10|11|12|15)(8 digits)
+    => is_banned        [bool: false]
+    => gender           [string: "unknown", Enum('male', 'female', 'unknown')]
+    => role             [string: "customer", Enum('customer', 'admin')]
+    => created_at       [DATETIME: current_timestamp]
+    => updated_at       [DATETIME: current_timestamp]
+
+@ Authors
+    => id               [int, auto_increment, PK]
+    => name             [string]
+    => bio              [text, nullable]
+    => created_at       [DATETIME: current_timestamp]
+    => updated_at       [DATETIME: current_timestamp]
+    
+@ Books
+    => id               [int, auto_increment, PK]
+    => author_id        [bigint, FK: Authors.id]
+    => title            [string]
+    => image            [string: default -> ""]                                    Note : show default if not exists
+    => description      [text, nullable]
+    => price            [decimal(10,2)]
+    => stock            [int: 0]
+    => created_at       [DATETIME: current_timestamp]
+    => updated_at       [DATETIME: current_timestamp]
+
+@ Orders
+    => id               [bigint, auto_increment, PK]
+    => customer_id          [bigint, FK: Users.id]
+    => total            [decimal(10,2)]
+    => status           [string: "pending", Enum(
+        'pending',                                                                  Note : default
+        'ordered',                                                                  Note : Customer Set It when he selected all items of this order
+        'cancelled'                                                                 Note : Admin set it
+        'done'                                                                      Note : Admin set it
+    )]
+    => cancel_reason    [text, nullable]                                           Note : Admin set it if cancelled
+    => total_price      [decimal(10,2)]
+    => created_at       [DATETIME: current_timestamp]
+    => updated_at       [DATETIME: current_timestamp]
+
+@ Order_items
+    => id               [bigint, auto_increment, PK]
+    => order_id         [bigint, FK: Orders.id]
+    => book_id          [bigint, FK: Books.id]
+    => quantity         [unsigned int: 1]                                          Note : Min 1
+    => unit_price       [decimal(10,2)]                                            Note : price of 1 book_id
+    => subtotal         [decimal(10,2)]                                            Note : unit_price * quantity
+    => created_at       [DATETIME: current_timestamp]
+    => updated_at       [DATETIME: current_timestamp]
+
+@ Api_tokens
+    => id               [bigint, auto_increment, PK]
+    => user_id          [bigint, FK: Users.id]
+    => token            [string, unique]
+    => expires_at       [DATETIME]
+    => created_at       [DATETIME: current_timestamp]
+    
+----------------------------------- Premissions -----------------------------------
+
+@ Admin :
+    * Login
+    * Profile Show[
+        His Info,
+        Total Orderes,
+        Total Authors,
+        Total Customers,
+        Total Admins,
+        Total Ordered orders,
+        Total Done orders,
+        Total Cancelled orders,
+        Total Pending orders,
+    ]
+    * Profile show data into pagination (10 items per page)[
+        Authors into cards as navs,
+        Orders data into tables into navs [ordered, cancelled, done],
+        users into cards as navs [admins, customers],
+        books into cards,
+    ]
+    * edit his Info
+    * create new admin
+    * search into books
+            by (title or author_name or min_price or max_price or stock_number)
+            and sort by [price (asc or desc)]
+    * ordered cancelled or done Orderes
+    
+@ Customer :
+    * Login
+    * Register
+    * Profile show[
+        His info,
+        total his bought books,
+        total his cancelled orders,
+        total his done orders,
+    ]
+    * profile show data into pagination (10)[
+        his Orders data into tables as navs [ordered, cancelled, done]
+        books into cards as navs,
+    ]
+    * edit his info
+    * search into books
+            by (title or author_name or min_price or max_price or stock_number)
+            and sort by [price (asc or desc)]
+    * create order and choose items
+
+----------------------------------- API -----------------------------------
+
+api/
+    v1/
+        auth/
+            (POST) login
+            (POST) register
+            (POST) logout
+
+        User/
+            (POST) edit
+            (GET) profile
+        
+        Admin/
+            books/
+                (POST) getAll?page=1
+                       Body {
+                        book_title : "",
+                        author_name : "",
+                        min_price : 0,
+                        max_price : 500,
+                        stock_number : 3,
+                        price_sort : ASC, // or DESC
+                       }
+                (GET) getBook/{id}
+                (POST) create
+                (POST) update
+                (POST) delete
+            users/
+                (GET) getAdmins?page=1
+                (GET) getCustomers?page=1
+            orders/
+                (GET) getOrdered?page=1
+                (GET) getCanceled?page=1
+                (GET) getDone?page=1
+            author/
+                (POST) getAll?page=1
+
+        Customer/
+            books/
+                (POST) getAll?page=1
+                    Body {
+                        book_title : "",
+                        author_name : "",
+                        min_price : 0,
+                        max_price : 500,
+                        price_sort : ASC, // or DESC
+                    }
+                (GET) getBook/{id}
+            orders/
+                (GET) getOrdered?page=1
+                (GET) getCanceled?page=1
+                (GET) getDone?page=1
+                items/
+                    (POST) addItem
+                    (POST) editItem
+                    (POST) removeItem
+
+
