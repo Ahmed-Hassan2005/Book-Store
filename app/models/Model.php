@@ -1,0 +1,15 @@
+<?php
+
+require_once __DIR__ . '/../../core/Database.php';
+
+class Model{
+    protected PDO $DB;
+
+    public function __construct(){
+        $this->DB = Database::connect();
+    }
+
+    public function close(){
+        Database::close();
+    }
+}
