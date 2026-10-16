@@ -12,7 +12,6 @@ class Response{
     }//error()
     
     public static function json(array $data, string $message = 'ok', int $code = 200): void{
-
         http_response_code($code);
         
         json([
@@ -26,3 +25,4 @@ class Response{
     }//json()
     
 }//Response
+

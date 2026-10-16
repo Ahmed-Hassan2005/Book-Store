@@ -68,7 +68,7 @@ class Validation{
                         $this->max($key, $value, $rule[1]);
                     }
                     else if($rule[0] === "unique"){
-                        $this->unique($key, $value, $rule[1]);
+                        $this->unique($key, $value, $rule[1], $rule[2] ?? null);
                     }
                     else if($rule[0] === "exists"){
                         $this->exists($key, $value, $rule[1], $rule[2]);
@@ -129,9 +129,13 @@ class Validation{
         }
     }//max()
 
-    private function unique(string $key, mixed $value, string $table): void {
+    private function unique(string $key, mixed $value, string $table, ?int $expectedId = null): void {
         $DB = DataBase::connect();
-        $sql = "SELECT COUNT(*) as n FROM $table WHERE $key = :_value";
+        $subquery = '';
+        if($expectedId != null){
+            $subquery = "AND id != '$expectedId'";
+        }
+        $sql = "SELECT COUNT(*) as n FROM $table WHERE $key = :_value $subquery";
         $stmt = $DB->prepare($sql);
         $stmt->execute([
             '_value' => $value
