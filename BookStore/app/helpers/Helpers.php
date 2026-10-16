@@ -1,8 +1,18 @@
 <?php
 
-function pr(array $var, bool $die = false): void{
+function pr(mixed $var, bool $die = false): void{
     echo '<pre>';
     print_r($var);
+    echo '</pre>';
+    
+    if($die){
+        die;
+    }
+}//pr()
+
+function prJson(mixed $var, bool $die = false): void{
+    echo '<pre>';
+    print_r(json_encode($var));
     echo '</pre>';
     
     if($die){
@@ -98,7 +108,7 @@ function route(?string $path = null){
 
 }//route()
 
-function back(?string $key = null, ?string $messege = ''): void{
+function back(?string $key = null, string | array | null $messege = ''): void{
     if($key !== null){
         $_SESSION[$key] = $messege;
     }
@@ -141,8 +151,8 @@ function oldSelect(string $key, string $value, bool $unset = false): string {
         unset($_SESSION['_old'][$key]);
 
     return $result;
-}
+}//oldSelect()
 
-
-
-
+function isSelect(mixed $value, mixed $optionValue): string {
+    return ($optionValue == $value) ? "selected" : '';
+}//isSelect()

@@ -20,8 +20,13 @@
                             <div class="title">
 
                                 <h5 class="text-center">
-                                    <i class="fa-solid fa-pen-to-square text-primary"></i>
-                                    Ahmed Hassan
+                                    <i 
+                                        style="cursor: pointer;"
+                                        class="fa-solid fa-pen-to-square text-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editName"
+                                    ></i>
+                                    <?= auth('name') ?>
 
                                 </h5>
 
@@ -32,43 +37,63 @@
                                 <div class="row">
 
                                     <div class="col-lg-4">
-                                        <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                        <i 
+                                            style="cursor: pointer;"
+                                            class="fa-solid fa-pen-to-square text-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editEmail"
+                                        ></i>
                                         Email:
                                     </div>
 
                                     <div class="col-lg-8">
-                                        ahmed@gmail.com
+                                        <?= auth('email') ?>
                                     </div>
 
                                 </div><!--email-->
 
                                 <div class="row">
                                     <div class="col-lg-4">
-                                        <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                        <i 
+                                            style="cursor: pointer;"
+                                            class="fa-solid fa-pen-to-square text-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editGender"
+                                        ></i>
                                         Gender:
                                     </div>
 
                                     <div class="col-lg-8">
-                                        Male
+                                        <?= auth('gender') ?>
                                     </div>
 
                                 </div><!--gender-->
 
                                 <div class="row">
                                     <div class="col-lg-4">
-                                        <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                        <i 
+                                            style="cursor: pointer;"
+                                            class="fa-solid fa-pen-to-square text-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editPhone"
+                                        ></i>
                                         Phone:
                                     </div>
 
                                     <div class="col-lg-8">
-                                        01143686914
+                                        <?= auth('phone') ?>
                                     </div>
 
                                 </div><!--phone-->
 
                                 <div class="row">
                                     <div class="col-lg-5">
-                                        <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                        <i 
+                                            style="cursor: pointer;"
+                                            class="fa-solid fa-pen-to-square text-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editPassword"
+                                        ></i>
                                         Password:
                                     </div>
 
@@ -273,6 +298,13 @@
                         role="tabpanel"
                         aria-labelledby="Authors-tab"
                         tabindex="0">
+                        <button
+                            class="btn btn-success mb-3 w-100"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#addAuthor">
+                            Add New Author
+                        </button>
                         <?php include __DIR__ . "/authors.php"; ?>
                     </div><!--Authors-->
 
@@ -282,6 +314,7 @@
                         role="tabpanel"
                         aria-labelledby="Books-tab"
                         tabindex="0">
+                        <?php include __DIR__ . "/booksFilter.php"; ?>
                         <?php include __DIR__ . "/books.php"; ?>
                     </div><!--Books-->
 
@@ -321,3 +354,5 @@
     </div><!--.container-fluid-->
 
 </section><!--#Profile-->
+
+<?php include __DIR__ . "/editPopups.php"; ?>

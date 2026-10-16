@@ -6,33 +6,7 @@
 
 <div class="container">
 
-    <?php
-    if(!empty($admins['data'])){
-
-        $prepareLi = '';
-        $pagesNumber = ceil($admins['total'] / 10);
-        $NextPageNumber = ($pagesNumber > 2) ? '2' : '';
-        $isNextPageDisabled = ($pagesNumber > 2) ? '' : 'disabled';
-
-        for ($i = 1; $i <= $pagesNumber; $i++) {
-            $isActive = ($i === 1) ? 'active' : '';
-            $prepareLi .= "<li class='page-item $isActive'><a class='page-link' data-page='$i'>$i</a></li>";
-        }
-
-        echo "
-            <nav aria-label='Page navigation example'>
-                <ul class='pagination'>
-                    <li class='page-item'><a class='page-link disabled' data-page>Previous</a></li>
-                    {$prepareLi}
-                    <li class='page-item'><a class='page-link $isNextPageDisabled' data-page='$NextPageNumber'>Next</a></li>
-                </ul>
-            </nav>
-        ";
-
-    }
-    ?>
-
-
+    <?php preparePagination($admins, 'admins'); ?>
 
     <div class="row">
         <?php
@@ -40,11 +14,19 @@
             $imgUrl = asset('imgs/admin.png');
 
             foreach ($admins['data'] as $admin) {
+                $badge = ($admin['is_banned'])
+                ? "<span class='badge text-bg-danger position-absolute top-0 end-0 mt-2 me-2'>Banned</span>"
+                : '';
+
+                $buttonBan = ($admin['is_banned'])
+                ? "<a class='btn btn-danger d-block mx-auto'>Unban</a>"
+                : '<a class="btn btn-danger d-block mx-auto">Ban</a>';
                 echo "
 
                     <div class='col-xl-4 col-lg-6'>
 
                         <div class='card my-1 rounded-4 bg-primary-subtle text-primary-emphasis'>
+                            $badge
                             <img src='$imgUrl' class='card-img-top mx-auto mt-3' style='width: 100px;'>
 
                             <div class='card-body'>
@@ -52,7 +34,7 @@
                                 <p class='card-text' style='overflow-x: auto;'>Email: <span class='ms-2'>{$admin['email']}</span></p>
                                 <p class='card-text' style='overflow-x: auto;'>Gender: <span class='ms-2'>{$admin['gender']}</span></p>
                                 <p class='card-text' style='overflow-x: auto;'>Phone: <span class='ms-2'>{$admin['phone']}</span></p>
-                                <a class='btn btn-primary d-block mx-auto'>Edit</a>
+                                {$buttonBan}
 
                             </div>
 
@@ -67,8 +49,6 @@
             echo"<div class='alert alert-warning w-75 mx-auto text-center' role='alert'>No Admins Found!</div>";
         }
         ?>
-
-
 
     </div><!--row-->
 

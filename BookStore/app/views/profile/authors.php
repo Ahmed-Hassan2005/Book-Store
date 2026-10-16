@@ -6,33 +6,7 @@
 
 <div class="container">
 
-    <?php
-    if(!empty($authors['data'])){
-
-        $prepareLi = '';
-        $pagesNumber = ceil($authors['total'] / 10);
-        $NextPageNumber = ($pagesNumber > 2) ? '2' : '';
-        $isNextPageDisabled = ($pagesNumber > 2) ? '' : 'disabled';
-
-        for ($i = 1; $i <= $pagesNumber; $i++) {
-            $isActive = ($i === 1) ? 'active' : '';
-            $prepareLi .= "<li class='page-item $isActive'><a class='page-link' data-page='$i'>$i</a></li>";
-        }
-
-        echo "
-            <nav aria-label='Page navigation example'>
-                <ul class='pagination'>
-                    <li class='page-item'><a class='page-link disabled' data-page>Previous</a></li>
-                    {$prepareLi}
-                    <li class='page-item'><a class='page-link $isNextPageDisabled' data-page='$NextPageNumber'>Next</a></li>
-                </ul>
-            </nav>
-        ";
-
-    }
-    ?>
-
-
+    <?php preparePagination($authors, 'authors'); ?>
 
     <div class="row">
         <?php
@@ -66,8 +40,6 @@
             echo"<div class='alert alert-warning w-75 mx-auto text-center' role='alert'>No Authors Found!</div>";
         }
         ?>
-
-
 
     </div><!--row-->
 
