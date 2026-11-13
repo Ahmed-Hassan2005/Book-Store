@@ -6,6 +6,28 @@ require_once __DIR__ . '/../../../../core/Response.php';
 require_once __DIR__ . '/../../../models/books/BookModel.php';
 
 class BookController extends Controller {
+
+    public function addBook(){
+        // Response::json([Request::hasFile('image')], 200);die;
+        $errors = Request::validate([
+            'author_id' => ['required', ['exists', 'authors', 'id']],
+            'title' => ['required'],
+            'description' => ['required'],
+            'price' => ['required'],
+            'stock' => ['required'],
+        ]);
+
+        // dd($errors);
+        // dd(Request::all());
+
+        if(!empty($errors)){
+            Response::json($errors, 'Unprocessable Entity', 422);
+        }
+
+        BookModel::addBook();
+
+    }
+
     public function filterBooks(){
         // dd(Request::all());
         $author = Request::input('author', '');
@@ -46,4 +68,5 @@ class BookController extends Controller {
 
         Response::json($data);
     }
+
 }
