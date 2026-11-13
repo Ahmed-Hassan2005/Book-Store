@@ -66,7 +66,7 @@ class Route{
         }//foreach
 
         if ($flag){
-            Response::error(405,"405 {$route['method']} Not Allowed");
+            Response::error("405 {$route['method']} Not Allowed", 405);
             return;
         }
 

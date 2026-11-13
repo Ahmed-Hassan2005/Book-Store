@@ -12,6 +12,14 @@ class Request{
 
     }//all()
 
+    public static function hasFile(string $fileName): bool{
+        return isset($_FILES[$fileName]) && $_FILES[$fileName]['tmp_name'] != '';
+    }
+
+    public static function file(string $fileName): mixed{
+        return $_FILES[$fileName];
+    }
+
     public static function input(string $key, mixed $default = null): mixed{
         return self::all()[$key] ?? $default;
     }
