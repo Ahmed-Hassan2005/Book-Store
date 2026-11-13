@@ -128,3 +128,80 @@
     </div>
 </div><!--addAuthor-->
 
+<div class="modal" id="addBook" tabindex="-1" aria-labelledby="addBookLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addBookForm" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" id="AuthorIdInput" name="author_id" value="">
+
+                    <div class="from-group mb-3">
+                        <label for="ModalBookAuthorName">Book Author</label>
+                        <select class="form-select" id="ModalBookAuthorName" disabled>
+                            <option value="" selected hidden></option>
+                        </select>
+                        <p class="alert alert-danger mt-2 d-none" data-error-name="author_id" id="ModalBookAuthorIdError"></p>
+                    </div>
+
+                    <div class="from-group mb-3">
+                        <label for="ModalBookTitle">Book Title</label>
+                        <input type="text" class="form-control" id="ModalBookTitle" name="title" value="">
+                        <p class="alert alert-danger mt-2 d-none" data-error-name="title" id="ModalBookTitleError"></p>
+                    </div>
+
+                    <div class="from-group mb-3">
+                        <label for="ModalBookImg">Book Img</label>
+                        <input type="file" class="form-control" id="ModalBookImg" name="image" value="">
+                        <p class="alert alert-danger mt-2 d-none" data-error-name="image" id="ModalBookImgError"></p>
+                    </div>
+
+                    <div class="from-group mb-3">
+                        <label for="ModalBookDescribtion">Book Describtion</label>
+                        <textarea class="form-control" id="ModalBookDescribtion" name="description" style="resize: none;" rows="4"></textarea>
+                        <p class="alert alert-danger mt-2 d-none" data-error-name="description" id="ModalBookDescribtionError"></p>
+                    </div>
+
+                    <div class="from-group mb-3">
+                        <label for="ModalBookPrice">Book Price</label>
+                        <input type="text" class="form-control" id="ModalBookPrice" name="price" value="">
+                        <p class="alert alert-danger mt-2 d-none" data-error-name="price" id="ModalBookPriceError"></p>
+                    </div>
+
+                    <div class="from-group mb-3">
+                        <label for="ModalBookStock">Book Stock</label>
+                        <input type="text" class="form-control" id="ModalBookStock" name="stock" value="">
+                        <p class="alert alert-danger mt-2 d-none" data-error-name="stock" id="ModalBookStockError"></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Add</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+</div><!--addBook-->
+
+<div class="modal" id="Cart" tabindex="-1" aria-labelledby="CartLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+
+        </div>
+
+    </div>
+    
+</div><!--Cart-->

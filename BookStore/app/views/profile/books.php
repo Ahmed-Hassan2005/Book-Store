@@ -16,6 +16,22 @@
                 $img = $book['image'] ? "uploads/{$book['image']}" : 'book.png';
                 $imgUrl = asset("imgs/$img");
                 $shortDescription = substr($book['description'], 0, 100);
+                $cartButton = '';
+                if(isAuth('customer')){
+                    $cartButton = "
+                        <div class='input-group'>
+                            <input 
+                                type='number'
+                                min='1' 
+                                class='form-control' 
+                                placeholder='add to cart' 
+                                aria-label='Example text with button addon' 
+                                aria-describedby='button-addon1'
+                                id='input-quantity-{$book['id']}'>
+                            <button class='btn btn-outline-success' type='button' onclick='addToCart({$book['id']}, this)'>Add To Cart</button>
+                        </div>
+                    ";
+                }
                 echo "
 
                     <div class='col-xl-4 col-lg-6'>
@@ -25,19 +41,17 @@
 
                             <div class='card-body'>
                                 <h5 class='card-title text-center'>{$book['title']}</h5>
-                                <p class='card-text' style='overflow-x: auto;'>Description: <span class='ms-2'>{$shortDescription}...</span></p>
+                                <!-- <p class='card-text' style='overflow-x: auto;'>Description: <span class='ms-2'>{$shortDescription}...</span></p> -->
                                 <p class='card-text' style='overflow-x: auto;'>Author: <span class='ms-2'>{$book['author_name']}</span></p>
                                 <p class='card-text' style='overflow-x: auto;'>Description: <span class='ms-2'>
                                 {$shortDescription}
                                 </span></p>
                                 <p class='card-text' style='overflow-x: auto;'>Price: <span class='ms-2'>{$book['price']}</span></p>
                                 <p class='card-text' style='overflow-x: auto;'>Stock: <span class='ms-2'>{$book['stock']}</span></p>
-                                <a class='btn btn-primary d-block mx-auto'>Edit</a>
-
+                                $cartButton
                             </div>
 
                         </div>
-
                     </div><!--total Books-->
 
                 ";

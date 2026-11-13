@@ -32,7 +32,7 @@
                             <td>{$order['id']}</td>
                             <td>{$order['customer_name']}</td>
                             <td>{$order['total_price']}</td>
-                            <td><a href=''>Show</a></td>
+                            <td><a onclick='getItemsIntoCarts({$order['id']}, `showOrder`)'>Show</a></td>
                             <td>{$order['created_at']}</td>
 
                         </tr>

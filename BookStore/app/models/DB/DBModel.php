@@ -67,6 +67,34 @@ class DBModel extends Model {
         ];
     }//getDataTable()
 
+    public static function getTotalAllBooksOfCustomer(): int{
+        $query = 
+            "SELECT SUM(orders_Items.quantity) AS total
+            FROM orders_Items
+            LEFT JOIN orders 
+            ON orders.id = orders_Items.order_id
+            WHERE
+                orders.customer_id = 25 AND
+                orders.status = 'done';"
+        ;
+
+        if (empty($wheres)) {
+            return (int) Database::connect()
+                ->query("$query;")
+                ->fetchColumn();
+        }
+
+        $where = self::prepareWhereQuery($wheres);
+
+        $query .= $where['query'];
+        // dd([$query, $where['values']]);
+
+        $stmt = Database::connect()->prepare($query);
+        $stmt->execute($where['values']);
+
+        return (int) $stmt->fetchColumn() ?? 0;
+    }//getTotal()
+
     private static function prepareWhereQuery(array $wheres): array{
         $finalQuery = '';
         
@@ -90,7 +118,7 @@ class DBModel extends Model {
 
             if ($i === $count - 1) break;
 
-            $logicalOperator = strtoupper($where[3] ?? 'AND');
+            $logicalOperator = $where[3] ?? 'AND';
 
             $bindingPower = $where[4] ?? 1;
 
@@ -146,5 +174,14 @@ class DBModel extends Model {
         ]; 
     }//prepareWhereQuery()
 
+    public static function getRoleOfUser(int $id): ?string{
+        $DB = Database::connect();
+        $query = "SELECT role FROM users WHERE id = :id;";
+        $stmt = $DB->prepare($query);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetchColumn();
+    }//getRoleOfUser()
+
 }
+
 

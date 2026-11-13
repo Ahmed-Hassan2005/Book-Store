@@ -16,7 +16,11 @@
             <th>Total Price</th>
             <th>Dstails</th>
             <th>Created_at</th>
-            <th>Options</th>
+            <?php 
+            if(isAuth('admin')){
+                echo "<th>Options</th>";
+            }
+            ?>
 
         </tr>
 
@@ -27,18 +31,25 @@
         <?php
             if(!empty($orders['ordered']['data'])){
 
+                // pr($orders['ordered']['data']);
                 foreach ($orders['ordered']['data'] as $order) {
+                    $options = '';
+                    if(isAuth('admin')){
+                        $options = "
+                            <td>
+                                <a class='btn btn-danger'>Cancel</a>
+                                <a class='btn btn-success'>Done</a>
+                            </td>
+                        ";
+                    }
                     echo "
                         <tr>
                             <td>{$order['id']}</td>
                             <td>{$order['customer_name']}</td>
                             <td>{$order['total_price']}</td>
-                            <td><a href=''>Show</a></td>
+                            <td><a onclick='getItemsIntoCarts({$order['id']}, `showOrder`)'>Show</a></td>
                             <td>{$order['created_at']}</td>
-                            <td>
-                                <a class='btn btn-danger'>Cancel</a>
-                                <a class='btn btn-success'>Done</a>
-                            </td>
+                            {$options}
                         </tr>
 
                     ";

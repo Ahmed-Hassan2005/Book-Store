@@ -25,7 +25,7 @@
                             <div class='card-body'>
                                 <h5 class='card-title text-center'>{$author['name']}</h5>
                                 <p class='card-text' style='overflow-x: auto;'>Bio: <span class='ms-2'>{$shortBio}...</span></p>
-                                <a class='btn btn-primary d-block mx-auto'>Edit</a>
+                                <a class='btn btn-success d-block mx-auto' onclick='openAddBookPopup({$author['id']}, `{$author['name']}`)'>Add New Book</a>
 
                             </div>
 

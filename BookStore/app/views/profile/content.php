@@ -1,3 +1,10 @@
+<?php 
+    /**
+     * @var array $total
+     */
+?>
+
+
 <section id="Profile" class="py-3">
 
     <div class="container-fluid">
@@ -110,8 +117,21 @@
             </div><!--.col-->
 
             <div class="col-lg-9 bg-white p-2 rounded-2 mx-auto">
+                <?php if(isAuth('customer')){?>
+                <button 
+                    type="button"
+                    onclick="getItemsIntoCarts()"
+                    class="btn bg-primary-subtle position-absolute z-3"
+                    style="right: 20px !important;">
+                    <i class="fa-solid fa-cart-shopping text-primary-emphasis"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <span id='TotalItems'><?= $total['cartsItems'] ?></span>
+                        <span class="visually-hidden"></span>
+                    </span>
+                </button>
+                <?php } ?>
 
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs position-relative" id="myTab" role="tablist">
 
                     <li class="nav-item" role="presentation">
 
@@ -129,53 +149,59 @@
 
                     </li><!--Statistics-->
 
-                    <li class="nav-item" role="presentation">
+                    <?php
+                        if(isAuth('admin')){
+                            echo "
+                                <li class='nav-item' role='presentation'>
 
-                        <button
-                            class="nav-link"
-                            id="Admins-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#Admins-tab-pane"
-                            type="button"
-                            role="tab"
-                            aria-controls="Admins-tab-pane"
-                            aria-selected="false">
-                            Admins
-                        </button>
+                                    <button
+                                        class='nav-link'
+                                        id='Admins-tab'
+                                        data-bs-toggle='tab'
+                                        data-bs-target='#Admins-tab-pane'
+                                        type='button'
+                                        role='tab'
+                                        aria-controls='Admins-tab-pane'
+                                        aria-selected='false'>
+                                        Admins
+                                    </button>
 
-                    </li><!--Admins-->
+                                </li><!--Admins-->
 
-                    <li class="nav-item" role="presentation">
+                                <li class='nav-item' role='presentation'>
 
-                        <button
-                            class="nav-link"
-                            id="Customers-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#Customers-tab-pane"
-                            type="button"
-                            role="tab"
-                            aria-controls="Customers-tab-pane"
-                            aria-selected="false">
-                            Customers
-                        </button>
+                                    <button
+                                        class='nav-link'
+                                        id='Customers-tab'
+                                        data-bs-toggle='tab'
+                                        data-bs-target='#Customers-tab-pane'
+                                        type='button'
+                                        role='tab'
+                                        aria-controls='Customers-tab-pane'
+                                        aria-selected='false'>
+                                        Customers
+                                    </button>
 
-                    </li><!--Customers-->
+                                </li><!--Customers-->
 
-                    <li class="nav-item" role="presentation">
+                                <li class='nav-item' role='presentation'>
 
-                        <button
-                            class="nav-link"
-                            id="Authors-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#Authors-tab-pane"
-                            type="button"
-                            role="tab"
-                            aria-controls="Authors-tab-pane"
-                            aria-selected="false">
-                            Authors
-                        </button>
+                                    <button
+                                        class='nav-link'
+                                        id='Authors-tab'
+                                        data-bs-toggle='tab'
+                                        data-bs-target='#Authors-tab-pane'
+                                        type='button'
+                                        role='tab'
+                                        aria-controls='Authors-tab-pane'
+                                        aria-selected='false'>
+                                        Authors
+                                    </button>
 
-                    </li><!--Authors-->
+                                </li><!--Authors-->
+                            ";
+                        }
+                    ?>
 
                     <li class="nav-item" role="presentation">
 
@@ -274,39 +300,50 @@
                         <?php include __DIR__ . "/statistics.php"; ?>
                     </div><!--Statistics-->
 
-                    <div
-                        class="tab-pane fade p-2 rounded-2"
-                        id="Admins-tab-pane"
-                        role="tabpanel"
-                        aria-labelledby="Admins-tab"
-                        tabindex="0">
-                        <?php include __DIR__ . "/admins.php"; ?>
-                    </div><!--Admins-->
+                    <?php 
+                        if(isAuth('admin')){
+                            echo "
+                                <div
+                                    class='tab-pane fade p-2 rounded-2'
+                                    id='Admins-tab-pane'
+                                    role='tabpanel'
+                                    aria-labelledby='Admins-tab'
+                                    tabindex='0'>
+                            ";
+                            include __DIR__ . '/admins.php';
+                            echo "        
+                                </div><!--Admins-->
 
-                    <div
-                        class="tab-pane fade p-2 rounded-2"
-                        id="Customers-tab-pane"
-                        role="tabpanel"
-                        aria-labelledby="Customers-tab"
-                        tabindex="0">
-                        <?php include __DIR__ . "/customer.php"; ?>
-                    </div><!--Customers-->
+                                <div
+                                    class='tab-pane fade p-2 rounded-2'
+                                    id='Customers-tab-pane'
+                                    role='tabpanel'
+                                    aria-labelledby='Customers-tab'
+                                    tabindex='0'>";
+                            include __DIR__ . '/customer.php';
+                            echo "        
+                                </div><!--Customers-->
 
-                    <div
-                        class="tab-pane fade p-2 rounded-2"
-                        id="Authors-tab-pane"
-                        role="tabpanel"
-                        aria-labelledby="Authors-tab"
-                        tabindex="0">
-                        <button
-                            class="btn btn-success mb-3 w-100"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#addAuthor">
-                            Add New Author
-                        </button>
-                        <?php include __DIR__ . "/authors.php"; ?>
-                    </div><!--Authors-->
+                                <div
+                                    class='tab-pane fade p-2 rounded-2'
+                                    id='Authors-tab-pane'
+                                    role='tabpanel'
+                                    aria-labelledby='Authors-tab'
+                                    tabindex='0'>
+                                    <button
+                                        class='btn btn-success mb-3 w-100'
+                                        type='button'
+                                        data-bs-toggle='modal'
+                                        data-bs-target='#addAuthor'>
+                                        Add New Author
+                                    </button>
+                            ";
+                            include __DIR__ . '/authors.php';
+                            echo "        
+                                </div><!--Authors-->
+                            ";
+                        }
+                    ?>
 
                     <div
                         class="tab-pane fade p-2 rounded-2"

@@ -144,4 +144,68 @@ class BookModel extends Model {
         ]; 
     }//prepareWhereQuery()
 
+    public static function addBook(){
+        $DB = Database::connect();
+
+        $query = 
+            "INSERT INTO books 
+            (author_id, title, image, description, price, stock) 
+            VALUES 
+            (:author_id, :title, :image, :description, :price, :stock);";
+
+        $stmt = $DB->prepare($query);
+        $stmt->execute([
+            'author_id' => Request::input('author_id'),
+            'title' => Request::input('title'),
+            'image' => self::uploadImage('image'),
+            'description' => Request::input('description'),
+            'price' => Request::input('price'),
+            'stock' => Request::input('stock')
+        ]);
+
+        $newBookId = $DB->lastInsertId();
+
+        $newBook = self::getDataBooks([
+            ['books.id', '=', $newBookId]
+        ])['data'][0];
+        Response::json($newBook);
+        // return $newBook['data'][0];
+    }
+
+    private static function uploadImage(string $fileName): ?string{
+        if(Request::hasFile($fileName)){
+            $file = Request::file($fileName);
+            $fileName = $file['name'];
+            $fileOriginalName = pathinfo($fileName, PATHINFO_FILENAME);
+            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            $fileTmp = $file['tmp_name'];
+
+            $allowedExtenions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+
+            if (!in_array($fileExtension, $allowedExtenions)) {
+                Response::error('Invalid image extension', 400);
+            }
+
+            $newFileName = $fileName . '_' . time() . ".{$fileExtension}";
+
+            $uploadDir = __DIR__ . "/../../../public/assets/imgs/uploads";
+            // dd($uploadDir);
+
+            if(!is_dir($uploadDir)){
+                mkdir($uploadDir);
+            }
+
+            $filePath = $uploadDir . '/' . $newFileName;
+
+            if(!move_uploaded_file($fileTmp, $filePath)) {
+                Response::error('Failed to upload file', 500);
+            }
+
+            return $newFileName;
+        }
+        else {
+            return null;
+        }
+    }
+
 }

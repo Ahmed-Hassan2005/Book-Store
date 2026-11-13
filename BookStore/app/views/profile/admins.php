@@ -18,14 +18,19 @@
                 ? "<span class='badge text-bg-danger position-absolute top-0 end-0 mt-2 me-2'>Banned</span>"
                 : '';
 
-                $buttonBan = ($admin['is_banned'])
-                ? "<a class='btn btn-danger d-block mx-auto'>Unban</a>"
-                : '<a class="btn btn-danger d-block mx-auto">Ban</a>';
+                $buttonBan = '';
+
+                if($admin['id'] > auth('id')){
+                    $buttonBan = ($admin['is_banned'])
+                    ? "<a class='btn btn-danger d-block mx-auto' onclick='banUser({$admin['id']}, `Unban`)'>Unban</a>"
+                    : "<a class='btn btn-danger d-block mx-auto' onclick='banUser({$admin['id']}, `Ban`)'>Ban</a>";
+                }
+
                 echo "
 
                     <div class='col-xl-4 col-lg-6'>
 
-                        <div class='card my-1 rounded-4 bg-primary-subtle text-primary-emphasis'>
+                        <div class='card my-1 rounded-4 bg-primary-subtle text-primary-emphasis' data-user-id='{$admin['id']}'>
                             $badge
                             <img src='$imgUrl' class='card-img-top mx-auto mt-3' style='width: 100px;'>
 

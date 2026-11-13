@@ -18,8 +18,6 @@
 
     <?php include __DIR__ . "/../component/Nav.php"; ?>
 
-    <!-- <?php pr($_SESSION['editAlert']) ?> -->
-
     <?php include __DIR__ . "/content.php"?>
 
     <!-------------------------------------------- JS ------------------------------------------->
@@ -28,6 +26,10 @@
     <script src="<?= asset('js/jquery.js') ?>"></script>
     <script src="<?= asset('js/sweetalert2.js') ?>"></script>
     <script src="<?= asset('js/global.js') ?>"></script>
+    <script src="<?= asset('js/profile/functions.js') ?>"></script>
+    <?php if(isAuth('customer')) { ?>
+        <script src="<?= asset('js/profile/customer.js') ?>"></script>
+    <?php } ?>
     <script src="<?= asset('js/profile/index.js') ?>"></script>
     <?php require_once __DIR__ . "/ultraSuperSpaghettiii.php" ?>
 

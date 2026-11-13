@@ -21,13 +21,13 @@
                 : '';
 
                 $buttonBan = ($customer['is_banned'])
-                ? "<a class='btn btn-danger d-block mx-auto'>Unban</a>"
-                : '<a class="btn btn-danger d-block mx-auto">Ban</a>';
+                ? "<a class='btn btn-danger d-block mx-auto' onclick='banUser({$customer['id']}, `Unban`)'>Unban</a>"
+                : "<a class='btn btn-danger d-block mx-auto' onclick='banUser({$customer['id']}, `Ban`)'>Ban</a>";
                 echo "
 
                     <div class='col-xl-4 col-lg-6'>
 
-                        <div class='card my-1 rounded-4 bg-primary-subtle text-primary-emphasis'>
+                        <div class='card my-1 rounded-4 bg-primary-subtle text-primary-emphasis' data-user-id='{$customer['id']}'>
                             {$badge}
                             <img src='$imgUrl' class='card-img-top mx-auto mt-3' style='width: 100px;'>
                             <div class='card-body'>
